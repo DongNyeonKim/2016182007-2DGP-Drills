@@ -8,6 +8,7 @@ def handle_events():
     global x, y
     global mx, my
     global tempx, tempy
+    global direct
     events = get_events()
     for event in events:
         if event.type == SDL_QUIT:
@@ -16,6 +17,11 @@ def handle_events():
             x,y = event.x, KPU_HEIGHT - 1 - event.y
         elif event.type == SDL_MOUSEBUTTONDOWN:
             mx,my = event.x-20, KPU_HEIGHT - 1 - event.y+30
+            if (tempx>mx):
+                direct =1
+            else:
+                direct =0
+
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             running = False
 
