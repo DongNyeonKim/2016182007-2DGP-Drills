@@ -62,7 +62,7 @@ def draw_line_basic(p1, p2):
         y = a * x + b
         draw_point((x, y))
 
-    draw_point(p2)
+ #   draw_point(p2)
 
 
 def draw_line(p1, p2):

@@ -1,81 +1,59 @@
 from pico2d import *
 
+
 KPU_WIDTH, KPU_HEIGHT = 1280, 1024
 
 
 def handle_events():
     global running
-    global x, y
-    global mx, my
-    global tempx, tempy
+    global mouse_x, mouse_y
     global direct
+    global mouse_click_x, mouse_click_y
+    global character_x, character_y
     events = get_events()
     for event in events:
         if event.type == SDL_QUIT:
             running = False
         elif event.type == SDL_MOUSEMOTION:
-            x,y = event.x, KPU_HEIGHT - 1 - event.y
+            mouse_x, mouse_y = event.x, KPU_HEIGHT - 1 - event.y
         elif event.type == SDL_MOUSEBUTTONDOWN:
-            mx,my = event.x-20, KPU_HEIGHT - 1 - event.y+30
-            if (tempx>mx):
-                direct =1
-            else:
-                direct =0
-
+            mouse_click_x, mouse_click_y = event.x - 20, KPU_HEIGHT - 1 - event.y + 25
+            if mouse_click_x < character_x:
+                direct = 0
+            elif character_x < mouse_click_x:
+                direct = 1
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             running = False
 
 
-def draw_line(p1, p2):
-    a = 0
-    for i in range(0, 100 + 1, 2):
-        t = i / 100
-        x = (1 - t) * p1[0] + t * p2[0]
-        y = (1 - t) * p1[1] + t * p2[1]
-        if x < a:
-            character_man.clip_draw(frame*100, 1 * 1, 100, 100, x, y)
-        else:
-            character_man.clip_draw(frame*100, 100 * 1, 100, 100, x, y)
-    a=x
-
-def draw_line_L(p1, p2):
-    for i in range(0, 100 + 1, 2):
-        t = i / 100
-        x = (1 - t) * p1[0] + t * p2[0]
-        y = (1 - t) * p1[1] + t * p2[1]
-        character_man.clip_draw(100, 100 * 1, 100, 100, x, y)
-        #character_man.clip_draw(frame*100, 1 * 1, 100, 100, x, y)
-
-open_canvas(KPU_WIDTH,KPU_HEIGHT)
+open_canvas(KPU_WIDTH, KPU_HEIGHT)
 kpu_ground = load_image('KPU_GROUND.png')
 character = load_image('hand_arrow.png')
 character_man = load_image('animation_sheet.png')
 
 running = True
-x, y = KPU_WIDTH // 2, KPU_HEIGHT // 2
-mx, my = x, y
-tempx, tempy=x, y
+mouse_x, mouse_y = KPU_WIDTH // 2, KPU_HEIGHT // 2
+mouse_click_x, mouse_click_y = 600, 550
+character_x, character_y = 600, 550
 frame = 0
+direct = 1
+i = 1
 hide_cursor()
 
 while running:
     clear_canvas()
-    a=1
-    if a==1:
-        character_man.clip_draw(frame * 100, 100 * 1, 100, 100, mx, my)
-        a=0
     kpu_ground.draw(KPU_WIDTH // 2, KPU_HEIGHT // 2)
-    draw_line((tempx, tempy),(mx,my))
-    tempx, tempy = mx, my
-#    character_man.clip_draw(frame * 100, 100 * 1, 100, 100, mx, my)
-    character.clip_draw(0, 0, 50, 50, x, y)
+    character_man.clip_draw(frame * 100, (99 * direct) + 1, 100, 100, character_x, character_y)
+    character.clip_draw(0, 0, 50, 50, mouse_x, mouse_y)
+    if i < 100:
+        i = 1
+        t = i / 100
+        character_x = (1 - t) * character_x + t * mouse_click_x
+        character_y = (1 - t) * character_y + t * mouse_click_y
+    i += 1
     update_canvas()
     frame = (frame + 1) % 8
 
     handle_events()
 
 close_canvas()
-
-
-
-
