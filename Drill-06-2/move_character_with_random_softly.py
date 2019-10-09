@@ -142,4 +142,5 @@ while running:
     handle_events()
     delay(0.02)
 
+
 close_canvas()
