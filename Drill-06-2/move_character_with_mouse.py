@@ -5,45 +5,7 @@ import random
 KPU_WIDTH, KPU_HEIGHT = 1280, 1024
 
 global x, y
-x, y = 0, 0
 global sign
-
-def draw_curve_4_points_fuck(p1, p2, p3, p4):
-    # draw p1-p2
-    for i in range(0, 100, 2):
-        t = i / 100
-        x = ((-t ** 3 + 2 * t ** 2 - t) * p4[0] + (3 * t ** 3 - 5 * t ** 2 + 2) * p1[0] + (
-                    -3 * t ** 3 + 4 * t ** 2 + t) * p2[0] + (t ** 3 - t ** 2) * p3[0]) / 2
-        y = ((-t ** 3 + 2 * t ** 2 - t) * p4[1] + (3 * t ** 3 - 5 * t ** 2 + 2) * p1[1] + (
-                    -3 * t ** 3 + 4 * t ** 2 + t) * p2[1] + (t ** 3 - t ** 2) * p3[1]) / 2
-        return x, y
-
-    # draw p2-p3
-    for i in range(0, 100, 2):
-        t = i / 100
-        x = ((-t ** 3 + 2 * t ** 2 - t) * p1[0] + (3 * t ** 3 - 5 * t ** 2 + 2) * p2[0] + (
-                    -3 * t ** 3 + 4 * t ** 2 + t) * p3[0] + (t ** 3 - t ** 2) * p4[0]) / 2
-        y = ((-t ** 3 + 2 * t ** 2 - t) * p1[1] + (3 * t ** 3 - 5 * t ** 2 + 2) * p2[1] + (
-                    -3 * t ** 3 + 4 * t ** 2 + t) * p3[1] + (t ** 3 - t ** 2) * p4[1]) / 2
-        return x, y
-
-    # draw p3-p4
-    for i in range(0, 100, 2):
-        t = i / 100
-        x = ((-t ** 3 + 2 * t ** 2 - t) * p2[0] + (3 * t ** 3 - 5 * t ** 2 + 2) * p3[0] + (
-                    -3 * t ** 3 + 4 * t ** 2 + t) * p4[0] + (t ** 3 - t ** 2) * p1[0]) / 2
-        y = ((-t ** 3 + 2 * t ** 2 - t) * p2[1] + (3 * t ** 3 - 5 * t ** 2 + 2) * p3[1] + (
-                    -3 * t ** 3 + 4 * t ** 2 + t) * p4[1] + (t ** 3 - t ** 2) * p1[1]) / 2
-        return x, y
-
-    # draw p4-p1
-    for i in range(0, 100, 2):
-        t = i / 100
-        x = ((-t ** 3 + 2 * t ** 2 - t) * p3[0] + (3 * t ** 3 - 5 * t ** 2 + 2) * p4[0] + (
-                    -3 * t ** 3 + 4 * t ** 2 + t) * p1[0] + (t ** 3 - t ** 2) * p2[0]) / 2
-        y = ((-t ** 3 + 2 * t ** 2 - t) * p3[1] + (3 * t ** 3 - 5 * t ** 2 + 2) * p4[1] + (
-                    -3 * t ** 3 + 4 * t ** 2 + t) * p1[1] + (t ** 3 - t ** 2) * p2[1]) / 2
-        return x, y
 
 
 def handle_events():
@@ -65,17 +27,18 @@ running = True
 character_x, character_y = 600, 550
 frame = 0
 hide_cursor()
-p1 = (random.randint(0, 1280), random.randint(0, 1024))
-p2 = (random.randint(0, 1280), random.randint(0, 1024))
-p3 = (random.randint(0, 1280), random.randint(0, 1024))
-p4 = (random.randint(0, 1280), random.randint(0, 1024))
-p5 = (random.randint(0, 1280), random.randint(0, 1024))
-p6 = (random.randint(0, 1280), random.randint(0, 1024))
-p7 = (random.randint(0, 1280), random.randint(0, 1024))
-p8 = (random.randint(0, 1280), random.randint(0, 1024))
-p9 = (random.randint(0, 1280), random.randint(0, 1024))
-p10 = (random.randint(0, 1280), random.randint(0, 1024))
+p1 = (random.randint(100, 1100), random.randint(100, 1000))
+p2 = (random.randint(100, 1100), random.randint(100, 1000))
+p3 = (random.randint(100, 1100), random.randint(100, 1000))
+p4 = (random.randint(100, 1100), random.randint(100, 1000))
+p5 = (random.randint(100, 1100), random.randint(100, 1000))
+p6 = (random.randint(100, 1100), random.randint(100, 1000))
+p7 = (random.randint(100, 1100), random.randint(100, 1000))
+p8 = (random.randint(100, 1100), random.randint(100, 1000))
+p9 = (random.randint(100, 1100), random.randint(100, 1000))
+p10 = (random.randint(100, 1100), random.randint(100, 1000))
 i = 0
+x,y=0,0
 sign = 0
 while running:
     clear_canvas()
