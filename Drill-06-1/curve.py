@@ -101,6 +101,4 @@ prepare_turtle_canvas()
 draw_curve_4_points_Re((-300, 200), (400, 350), (300, -300), (-200, -200))
 
 
-
-
 turtle.done()
