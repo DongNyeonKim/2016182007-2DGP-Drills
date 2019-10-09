@@ -5,12 +5,14 @@ import random
 KPU_WIDTH, KPU_HEIGHT = 1280, 1024
 
 global x, y
+global tempx
 global sign
 
 
 def handle_events():
     global running
     global character_x, character_y
+    global direct
     events = pico2d.get_events()
     for event in events:
         if event.type == pico2d.SDL_QUIT:
@@ -37,9 +39,12 @@ p7 = (random.randint(100, 1100), random.randint(100, 1000))
 p8 = (random.randint(100, 1100), random.randint(100, 1000))
 p9 = (random.randint(100, 1100), random.randint(100, 1000))
 p10 = (random.randint(100, 1100), random.randint(100, 1000))
+
 i = 0
 x,y=0,0
+tempx =0
 sign = 0
+direct = 1
 while running:
     clear_canvas()
     kpu_ground.draw(KPU_WIDTH // 2, KPU_HEIGHT // 2)
@@ -133,8 +138,14 @@ while running:
         if i == 100:
             sign = 0
             i = 0
+    if x >= tempx:
+        direct = 1
+    elif x<tempx :
+        direct = 0
 
-    character_man.clip_draw(frame * 100, 100, 100, 100, x, y)
+    character_man.clip_draw(frame * 100, (99 * direct) + 1, 100, 100, x, y)
+
+    tempx = x
 
     update_canvas()
 
