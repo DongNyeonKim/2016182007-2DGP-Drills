@@ -3,8 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="17669b7d-f0f1-4401-bfbb-0fa47c6bc3a2" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/line.py" beforeDir="false" afterPath="$PROJECT_DIR$/line.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/move_character_with_mouse.py" beforeDir="false" afterPath="$PROJECT_DIR$/move_character_with_mouse.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Drill-06-2/curve.py" beforeDir="false" afterPath="$PROJECT_DIR$/../Drill-06-2/curve.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Drill-06-2/move_character_with_random_softly.py" beforeDir="false" afterPath="$PROJECT_DIR$/../Drill-06-2/move_character_with_random_softly.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
