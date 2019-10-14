@@ -42,14 +42,14 @@ class BigBall:
     def __init__(self):
         self.x, self.y = random.randint(50,750), 599
         self.image = load_image('ball41x41.png')
-        self.yspeed = random.randint(15,20)
+        self.yspeed = random.randint(10,20)
 
 
     def update(self):
         self.y -= self.yspeed
         if self.y <= 75:
             self.y = 75
-            
+
     def draw(self):
         self.image.clip_draw(0, 0, 41, 41, self.x, self.y)
 
