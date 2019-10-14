@@ -35,6 +35,35 @@ class SmallBall:
     def draw(self):
         self.image.clip_draw(0, 0, 21, 21, self.x, self.y)
 
+class SmallBall:
+    yspeed=0
+    def __init__(self):
+        self.x, self.y = random.randint(50,750), 599
+        self.image = load_image('ball21x21.png')
+        self.yspeed = random.randint(10, 20)
+
+    def update(self):
+        if(self.y >= 65):
+            self.y -=self.yspeed
+
+    def draw(self):
+        self.image.clip_draw(0, 0, 21, 21, self.x, self.y)
+
+class BigBall:
+    yspeed=0
+    def __init__(self):
+        self.x, self.y = random.randint(50,750), 599
+        self.image = load_image('ball41x41.png')
+        self.yspeed = random.randint(10,20)
+
+
+    def update(self):
+        if(self.y >= 75):
+            self.y -= self.yspeed
+
+    def draw(self):
+        self.image.clip_draw(0, 0, 41, 41, self.x, self.y)
+
 
 
 def handle_events():
