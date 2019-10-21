@@ -29,11 +29,7 @@ def handle_events():
 
 def draw():
     clear_canvas()
-    a = stop % 200
-    if  100>a>0:
-        image.clip_draw(200, 200, 500, 500, 400, 300, 200, 200)
-    main_state.boy.draw()
-    main_state.grass.draw()
+    image.clip_draw(200, 200, 500, 500, 400, 300, 300, 300)
     update_canvas()
 
 
