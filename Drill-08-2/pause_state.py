@@ -23,19 +23,17 @@ def handle_events():
             game_framework.quit()
         elif event.type == SDL_KEYDOWN and event.key == SDLK_p:
             game_framework.pop_state()
-            #game_framework.change_state(main_state)
+
 
 
 def draw():
     clear_canvas()
     a = stop % 200
-    if 100>a>0:
+    if 100 > a > 0:
         image.clip_draw(200, 200, 500, 500, 400, 300, 300, 300)
     main_state.grass.draw()
     main_state.boy.draw()
     update_canvas()
-
-
 
 
 
