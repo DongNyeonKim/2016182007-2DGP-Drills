@@ -31,6 +31,8 @@ def draw():
     a = stop % 200
     if 100>a>0:
         image.clip_draw(200, 200, 500, 500, 400, 300, 300, 300)
+    main_state.grass.draw()
+    main_state.boy.draw()
     update_canvas()
 
 
