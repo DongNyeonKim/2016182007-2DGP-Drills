@@ -26,7 +26,6 @@ def handle_events():
             #game_framework.change_state(main_state)
 
 
-
 def draw():
     clear_canvas()
     image.clip_draw(200, 200, 500, 500, 400, 300, 300, 300)
