@@ -47,9 +47,9 @@ class IdleState:
         elif event == LEFT_UP:
             boy.velocity += RUN_SPEED_PPS
         elif event == SPACE_DOWN:
-            boy.velocity_y += RUN_SPEED_PPS*5
+            boy.velocity_y += RUN_SPEED_PPS*4
         elif event == SPACE_UP:
-            boy.velocity_y -= RUN_SPEED_PPS*5
+            boy.velocity_y -= RUN_SPEED_PPS*4
         boy.timer = 1000
 
     @staticmethod
@@ -64,10 +64,10 @@ class IdleState:
             boy.add_event(SLEEP_TIMER)
         boy.y += boy.velocity_y * game_framework.frame_time
         if boy.y >= 90and boy.check == 0:
-            boy.y -= 2
+            boy.y -= 3
         elif boy.check == 1:
             if boy.y >= 255:
-                boy.y -=2
+                boy.y -=3
 
     @staticmethod
     def draw(boy):
@@ -90,9 +90,9 @@ class RunState:
         elif event == LEFT_UP:
             boy.velocity += RUN_SPEED_PPS
         elif event == SPACE_DOWN:
-            boy.velocity_y += RUN_SPEED_PPS*5
+            boy.velocity_y += RUN_SPEED_PPS*4
         elif event == SPACE_UP:
-            boy.velocity_y -= RUN_SPEED_PPS*5
+            boy.velocity_y -= RUN_SPEED_PPS*4
         boy.dir = clamp(-1, boy.velocity, 1)
 
     @staticmethod
@@ -107,10 +107,10 @@ class RunState:
         boy.x = clamp(25, boy.x, 1600 - 25)
         boy.y += boy.velocity_y * game_framework.frame_time
         if boy.y >= 90 and boy.check == 0:
-            boy.y -= 2
+            boy.y -= 3
         elif boy.check == 1:
             if boy.y >= 255:
-                boy.y -=2
+                boy.y -=3
 
     @staticmethod
     def draw(boy):
