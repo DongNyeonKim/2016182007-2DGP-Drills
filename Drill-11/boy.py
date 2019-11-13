@@ -1,6 +1,7 @@
 import game_framework
 from pico2d import *
 from ball import Ball
+from brick import Brick
 
 import game_world
 
@@ -62,8 +63,11 @@ class IdleState:
         if boy.timer == 0:
             boy.add_event(SLEEP_TIMER)
         boy.y += boy.velocity_y * game_framework.frame_time
-        if boy.y >= 90:
+        if boy.y >= 90and boy.check == 0:
             boy.y -= 2
+        elif boy.check == 1:
+            if boy.y >= 255:
+                boy.y -=2
 
     @staticmethod
     def draw(boy):
@@ -102,9 +106,12 @@ class RunState:
         boy.x += boy.velocity * game_framework.frame_time
         boy.x = clamp(25, boy.x, 1600 - 25)
         boy.y += boy.velocity_y * game_framework.frame_time
-        if boy.y >= 90:
+        if boy.y >= 90 and boy.check == 0:
             boy.y -= 2
-            
+        elif boy.check == 1:
+            if boy.y >= 255:
+                boy.y -=2
+
     @staticmethod
     def draw(boy):
         if boy.dir == 1:
@@ -160,8 +167,9 @@ class Boy:
         self.cur_state = IdleState
         self.cur_state.enter(self, None)
 
+        self.check =0
     def get_bb(self):
-        return self.x-50, self.y-50, self.x +50, self.y+50
+        return self.x-25, self.y-50, self.x +25, self.y+50
 
 
     def fire_ball(self):
@@ -191,4 +199,5 @@ class Boy:
         if (event.type, event.key) in key_event_table:
             key_event = key_event_table[(event.type, event.key)]
             self.add_event(key_event)
+
 

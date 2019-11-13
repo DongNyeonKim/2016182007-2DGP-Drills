@@ -95,6 +95,19 @@ def update():
             #공이 벽돌위에 닿을 경우에만 멈춤
             if brick.x + 90 >= ball.x >= brick.x - 90:
                 ball.onthebrick()
+
+    if collide(boy,brick):
+        boy.check =1
+        boy.x = boy.x + brick.velocity
+        if brick.x + 90 > boy.x > brick.x - 90:
+            # # boy.y += 2
+            # boy.y - 50
+            pass
+            #boy.onthebrick()
+
+
+    elif not collide(boy, brick):
+        boy.check =0
     # fill here for collision check
 
 
