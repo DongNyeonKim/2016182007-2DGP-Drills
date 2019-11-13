@@ -2,7 +2,7 @@ import random
 from pico2d import *
 import game_world
 import game_framework
-
+from brick import Brick
 MIN_FALL_SPEED = 50
 MAX_FALL_SPEED = 200
 
@@ -28,6 +28,10 @@ class Ball:
     #fill here for def stop
     def stop(self):
         self.fall_speed =0
+
+    def onthebrick(self):
+        self.fall_speed =0
+
 
 
 # fill here

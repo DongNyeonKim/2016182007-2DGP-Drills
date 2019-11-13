@@ -13,6 +13,7 @@ class Brick:
             Brick.image = load_image('brick180x40.png')
         self.x, self.y, self.speed = 200,200,300
         self.dir=0
+        self.velocity=0
 
     def get_bb(self):
         return self.x - 90, self.y - 20, self.x + 90, self.y + 20
@@ -23,12 +24,16 @@ class Brick:
         # fill here for draw
 
     def update(self):
+        #브릭의 이동
         if self.x <= 0+90:
             self.dir = 0
         if self.x >= 1600-90:
             self.dir = 1
         if self.dir==0:
-            self.x += self.speed * game_framework.frame_time
+            self.velocity = self.speed * game_framework.frame_time
+            self.x += self.velocity
         elif self.dir==1:
-            self.x -= self.speed * game_framework.frame_time
+            self.velocity = -(self.speed * game_framework.frame_time)
+            self.x += self.velocity
 
+        # self.x += self.velocity
