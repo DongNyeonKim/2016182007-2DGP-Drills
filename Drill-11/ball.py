@@ -30,7 +30,7 @@ class Ball:
         self.fall_speed =0
 
     def onthebrick(self):
-        self.fall_speed =0
+            self.fall_speed = 0
 
 
 

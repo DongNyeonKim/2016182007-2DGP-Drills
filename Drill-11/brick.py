@@ -7,11 +7,13 @@ MAX_FALL_SPEED = 200
 
 class Brick:
     image = None
-
+    x = 200
     def __init__(self):
         if Brick.image == None:
             Brick.image = load_image('brick180x40.png')
-        self.x, self.y, self.speed = 200,200,300
+        #self.x = 200
+        self.y = 200
+        self.speed = 300
         self.dir=0
         self.velocity=0
 

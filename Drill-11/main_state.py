@@ -91,8 +91,10 @@ def update():
         if collide(grass, ball):
             ball.stop()
         if collide(brick, ball):
-            ball.x = ball.x+ brick.velocity
-            ball.onthebrick()
+            ball.x = ball.x + brick.velocity
+            #공이 벽돌위에 닿을 경우에만 멈춤
+            if brick.x + 90 >= ball.x >= brick.x - 90:
+                ball.onthebrick()
     # fill here for collision check
 
 
