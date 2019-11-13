@@ -9,7 +9,7 @@ PIXEL_PER_METER = (10.0 / 0.3)  # 10 pixel 30 cm
 RUN_SPEED_KMPH = 20.0  # Km / Hour
 RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0 / 60.0)
 RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
-RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER) 
+RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
 
 # Boy Action Speed
 TIME_PER_ACTION = 0.5
@@ -19,14 +19,15 @@ FRAMES_PER_ACTION = 8
 
 
 # Boy Event
-RIGHT_DOWN, LEFT_DOWN, RIGHT_UP, LEFT_UP, SLEEP_TIMER, SPACE = range(6)
+RIGHT_DOWN, LEFT_DOWN, RIGHT_UP, LEFT_UP, SLEEP_TIMER, SPACE_DOWN, SPACE_UP = range(7)
 
 key_event_table = {
     (SDL_KEYDOWN, SDLK_RIGHT): RIGHT_DOWN,
     (SDL_KEYDOWN, SDLK_LEFT): LEFT_DOWN,
     (SDL_KEYUP, SDLK_RIGHT): RIGHT_UP,
     (SDL_KEYUP, SDLK_LEFT): LEFT_UP,
-    (SDL_KEYDOWN, SDLK_SPACE): SPACE
+    (SDL_KEYDOWN, SDLK_SPACE): SPACE_DOWN,
+    (SDL_KEYUP, SDLK_SPACE): SPACE_UP
 }
 
 
@@ -44,12 +45,14 @@ class IdleState:
             boy.velocity -= RUN_SPEED_PPS
         elif event == LEFT_UP:
             boy.velocity += RUN_SPEED_PPS
+        elif event == SPACE_DOWN:
+            boy.velocity_y += RUN_SPEED_PPS*5
+        elif event == SPACE_UP:
+            boy.velocity_y -= RUN_SPEED_PPS*5
         boy.timer = 1000
 
     @staticmethod
     def exit(boy, event):
-        if event == SPACE:
-            boy.fire_ball()
         pass
 
     @staticmethod
@@ -58,6 +61,9 @@ class IdleState:
         boy.timer -= 1
         if boy.timer == 0:
             boy.add_event(SLEEP_TIMER)
+        boy.y += boy.velocity_y * game_framework.frame_time
+        if boy.y >= 90:
+            boy.y -= 2
 
     @staticmethod
     def draw(boy):
@@ -79,12 +85,15 @@ class RunState:
             boy.velocity -= RUN_SPEED_PPS
         elif event == LEFT_UP:
             boy.velocity += RUN_SPEED_PPS
+        elif event == SPACE_DOWN:
+            boy.velocity_y += RUN_SPEED_PPS*5
+        elif event == SPACE_UP:
+            boy.velocity_y -= RUN_SPEED_PPS*5
         boy.dir = clamp(-1, boy.velocity, 1)
 
     @staticmethod
     def exit(boy, event):
-        if event == SPACE:
-            boy.fire_ball()
+        pass
 
     @staticmethod
     def do(boy):
@@ -92,7 +101,10 @@ class RunState:
         boy.frame = (boy.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
         boy.x += boy.velocity * game_framework.frame_time
         boy.x = clamp(25, boy.x, 1600 - 25)
-
+        boy.y += boy.velocity_y * game_framework.frame_time
+        if boy.y >= 90:
+            boy.y -= 2
+            
     @staticmethod
     def draw(boy):
         if boy.dir == 1:
@@ -128,9 +140,9 @@ class SleepState:
 
 
 next_state_table = {
-    IdleState: {RIGHT_UP: RunState, LEFT_UP: RunState, RIGHT_DOWN: RunState, LEFT_DOWN: RunState, SLEEP_TIMER: SleepState, SPACE: IdleState},
-    RunState: {RIGHT_UP: IdleState, LEFT_UP: IdleState, LEFT_DOWN: IdleState, RIGHT_DOWN: IdleState, SPACE: RunState},
-    SleepState: {LEFT_DOWN: RunState, RIGHT_DOWN: RunState, LEFT_UP: RunState, RIGHT_UP: RunState, SPACE: IdleState}
+    IdleState: {RIGHT_UP: RunState, LEFT_UP: RunState, RIGHT_DOWN: RunState, LEFT_DOWN: RunState, SLEEP_TIMER: SleepState, SPACE_DOWN: IdleState,SPACE_UP: IdleState},
+    RunState: {RIGHT_UP: IdleState, LEFT_UP: IdleState, LEFT_DOWN: IdleState, RIGHT_DOWN: IdleState, SPACE_DOWN: RunState, SPACE_UP: RunState},
+    SleepState: {LEFT_DOWN: RunState, RIGHT_DOWN: RunState, LEFT_UP: RunState, RIGHT_UP: RunState, SPACE_DOWN: IdleState, SPACE_UP: IdleState}
 }
 
 class Boy:
@@ -142,6 +154,7 @@ class Boy:
         self.font = load_font('ENCR10B.TTF', 16)
         self.dir = 1
         self.velocity = 0
+        self.velocity_y= 0
         self.frame = 0
         self.event_que = []
         self.cur_state = IdleState
@@ -149,7 +162,6 @@ class Boy:
 
     def get_bb(self):
         return self.x-50, self.y-50, self.x +50, self.y+50
-        return 0, 0, 0, 0
 
 
     def fire_ball(self):
