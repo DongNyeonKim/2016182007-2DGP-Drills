@@ -1,6 +1,8 @@
 from pico2d import *
 import random
 
+PIXEL_PER_METER = (10.0 / 0.3)  # 10 pixel 30 cm
+
 class Ball:
     def __init__(self):
         self.image = load_image('ball21x21.png')

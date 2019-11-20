@@ -3,11 +3,12 @@ import math
 import game_framework
 from BehaviorTree import BehaviorTree, SelectorNode, SequenceNode, LeafNode
 from pico2d import *
+from boy import Boy
 import main_state
 
 # zombie Run Speed
 PIXEL_PER_METER = (10.0 / 0.3)  # 10 pixel 30 cm
-RUN_SPEED_KMPH = 10.0  # Km / Hour
+RUN_SPEED_KMPH = 15.0  # Km / Hour
 RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0 / 60.0)
 RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
 RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
@@ -50,6 +51,9 @@ class Zombie:
 
         self.hp = 0
 
+
+
+
     def calculate_current_position(self):
         self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % FRAMES_PER_ACTION
         self.x += self.speed * math.cos(self.dir) * game_framework.frame_time
@@ -62,65 +66,70 @@ class Zombie:
         self.calculate_current_position()
         self.timer -= game_framework.frame_time
         if self.timer < 0:
-            self.timer +=1.0
-            self.dir = random.random()*2*math.pi
+            self.timer += 1.0
+            self.dir = random.random() * 2 * math.pi
 
         return BehaviorTree.SUCCESS
-        pass
 
     def find_player(self):
         boy = main_state.get_boy()
-        distnace = (boy.x -self.x)**2 +(boy.y - self.y)**2
-        if distnace < (PIXEL_PER_METER*10)**2:
-            self.dir = math.atan2(boy.y- self.y, boy.x - self.x)
+        distance = (boy.x - self.x) **2 + (boy.y - self.y)**2
+        if distance < (PIXEL_PER_METER * 8) **2:
+            self.dir = math.atan2(boy.y - self.y, boy.x - self.x)
             return BehaviorTree.SUCCESS
         else:
             self.speed = 0
             return BehaviorTree.FAIL
-        pass
 
     def move_to_player(self):
+        boy = main_state.get_boy()
         self.speed = RUN_SPEED_PPS
         self.calculate_current_position()
-        return BehaviorTree.SUCCESS
-        pass
+        if boy.hp < self.hp:
+            return BehaviorTree.SUCCESS
+        else:
+            return BehaviorTree.FAIL
+
+    def away_from_player(self):
+        boy = main_state.get_boy()
+        self.speed = -2 * RUN_SPEED_PPS
+        self.calculate_current_position()
+        if boy.hp < self.hp:
+            return BehaviorTree.FAIL
+        else:
+            return BehaviorTree.SUCCESS
 
     def get_next_position(self):
         self.target_x, self.target_y = self.patrol_positions[self.patrol_order % len(self.patrol_positions)]
         self.patrol_order += 1
-        self.dir = math.atan2(self.target_y - self.y, self.target_x- self.x)
+        self.dir = math.atan2(self.target_y - self.y, self.target_x - self.x)
         return BehaviorTree.SUCCESS
-        pass
 
     def move_to_target(self):
         self.speed = RUN_SPEED_PPS
         self.calculate_current_position()
 
-        distance = (self.target_x - self.x)**2 + (self.target_y-self.y)**2
+        distance = (self.target_x - self.x) ** 2 + (self.target_y - self.y) ** 2
 
-        if distance < PIXEL_PER_METER**2:
+        if distance < PIXEL_PER_METER ** 2:
             return BehaviorTree.SUCCESS
         else:
             return BehaviorTree.RUNNING
-        pass
 
     def build_behavior_tree(self):
         wander_node = LeafNode("Wander", self.wander)
-        # get_next_postion_node = LeafNode("Get Next Position", self.get_next_position)
-        # move_to_target_node = LeafNode("Move to Target", self.move_to_target)
-        # patrol_node = SequenceNode("Patrol")
-        # patrol_node.add_children(get_next_postion_node,move_to_target_node)
-        # self.bt = BehaviorTree(patrol_node)
-
-        find_playder_node = LeafNode("Find Player", self.find_player)
+        find_player_node = LeafNode("Find Player", self.find_player)
         move_to_player_node = LeafNode("Move to Player", self.move_to_player)
-        chase_node = SequenceNode("Chase")
-        chase_node.add_children(find_playder_node,move_to_player_node)
-        wander_chase_node = SelectorNode("WanderChase")
-        wander_chase_node.add_children(chase_node, wander_node)
+        away_from_player_node = LeafNode("Away from Player", self.away_from_player)
+        chase_node = SequenceNode("Chase to player")
+        chase_node.add_children(find_player_node, move_to_player_node)
+        away_node = SequenceNode("Away from player")
+        away_node.add_children(find_player_node, away_from_player_node)
+        find_node = SelectorNode("Find player")
+        find_node.add_children(chase_node, away_node)
+        wander_chase_node = SelectorNode("Wander_Chase")
+        wander_chase_node.add_children(find_node, wander_node)
         self.bt = BehaviorTree(wander_chase_node)
-        pass
-
 
 
 

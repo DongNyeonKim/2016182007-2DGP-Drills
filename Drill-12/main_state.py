@@ -49,7 +49,7 @@ def enter():
     game_world.add_object(ground, 0)
 
     global balls
-    balls = [Ball() for i in range(10)]
+    balls = [Ball() for i in range(30)]
     game_world.add_objects(balls,1)
 
 def exit():
@@ -78,6 +78,13 @@ def update():
     for game_object in game_world.all_objects():
         game_object.update()
 
+    if collide(boy, zombie):
+        if boy.hp > zombie.hp:
+            game_world.remove_object(zombie)
+            print("좀비는 죽음")
+        elif boy.hp < zombie.hp:
+            print("게임오버")
+
     for ball in balls:
         if collide(boy, ball):
             balls.remove(ball)
@@ -90,7 +97,7 @@ def update():
             print("좀비 볼 충돌")
             zombie.hp += 100
 
-    if collide(boy, zombie):
+
 
 
 def draw():
