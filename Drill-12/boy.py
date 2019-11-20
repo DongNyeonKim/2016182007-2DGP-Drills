@@ -118,7 +118,6 @@ class Boy:
         self.hp = 0
 
     def get_bb(self):
-        # fill here
         return self.x - 50, self.y - 50, self.x + 50, self.y + 50
 
 

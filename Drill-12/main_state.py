@@ -78,6 +78,20 @@ def update():
     for game_object in game_world.all_objects():
         game_object.update()
 
+    for ball in balls:
+        if collide(boy, ball):
+            balls.remove(ball)
+            game_world.remove_object(ball)
+            print("보이 볼 충돌")
+            boy.hp += 100
+        if collide(zombie, ball):
+            balls.remove(ball)
+            game_world.remove_object(ball)
+            print("좀비 볼 충돌")
+            zombie.hp += 100
+
+    if collide(boy, zombie):
+
 
 def draw():
     clear_canvas()
