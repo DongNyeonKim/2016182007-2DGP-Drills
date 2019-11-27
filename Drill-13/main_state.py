@@ -6,7 +6,7 @@ import os
 from pico2d import *
 import game_framework
 import game_world
-
+import rank_state
 import world_build_state
 
 name = "MainState"
@@ -57,6 +57,13 @@ def handle_events():
 
 
 def update():
+    for object in game_world.all_objects():
+        if object != boy:
+            if(collide(boy , object)):
+                boy.collide_zombie()
+                save_game_inform()
+                game_framework.change_state(rank_state)
+
     for game_object in game_world.all_objects():
         game_object.update()
 
@@ -68,7 +75,25 @@ def draw():
     update_canvas()
 
 
+def save_game():
+    pass
 
+
+def save_game_inform():
+    count = 0
+    file = []
+    with open('rank_data.json', 'r') as f:
+        files = json.load(f)
+
+    for z in files:
+        #count += 1
+        file.append(z)
+
+    boy_inform = [float(boy.end_time)]
+    file.append(boy_inform)
+
+    with open('rank_data.json', 'w') as f:
+        json.dump(file, f)
 
 
 

@@ -144,6 +144,8 @@ class Boy:
         # fill here
         return self.x - 50, self.y - 50, self.x + 50, self.y + 50
 
+    def collide_zombie(self):
+        self.end_time = get_time() - self.start_time
 
     def fire_ball(self):
         #ball = Ball(self.x, self.y, self.dir * RUN_SPEED_PPS * 10)
