@@ -16,7 +16,6 @@ ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
 FRAMES_PER_ACTION = 8
 
 
-
 # Boy Event
 RIGHTKEY_DOWN, LEFTKEY_DOWN, UPKEY_DOWN, DOWNKEY_DOWN, RIGHTKEY_UP, LEFTKEY_UP, UPKEY_UP, DOWNKEY_UP, SPACE = range(9)
 
@@ -75,8 +74,6 @@ class WalkingState:
         boy.x = clamp(0+25, boy.x, boy.bg.w-25)
         boy.y = clamp(0+40, boy.y, boy.bg.h-40)
         # fill here
-
-
 
     @staticmethod
     def draw(boy):
