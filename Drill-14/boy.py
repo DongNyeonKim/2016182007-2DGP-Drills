@@ -72,8 +72,8 @@ class WalkingState:
 
         # boy.x = clamp(boy.canvas_width//2, boy.x, boy.bg.w - boy.canvas_width//2)
         # boy.y = clamp(boy.canvas_height//2, boy.y, boy.bg.h - boy.canvas_height//2)
-        # boy.x = clamp(0, boy.x, boy.bg.w)
-        # boy.y = clamp(0, boy.y, boy.bg.h)
+        boy.x = clamp(0+25, boy.x, boy.bg.w-25)
+        boy.y = clamp(0+40, boy.y, boy.bg.h-40)
         # fill here
 
 
@@ -82,8 +82,8 @@ class WalkingState:
     def draw(boy):
         # fill here
         # cx, cy = boy.canvas_width//2, boy.canvas_height//2
-        #cx, cy = boy.x - boy.bg.window_left, boy.y - boy.bg.window_bottom
-        cx, cy = boy.canvas_width//2, boy.canvas_height//2
+        cx, cy = boy.x - boy.bg.window_left, boy.y - boy.bg.window_bottom
+        #cx, cy = boy.canvas_width//2, boy.canvas_height//2
         if boy.x_velocity > 0:
             boy.image.clip_draw(int(boy.frame) * 100, 100, 100, 100, cx, cy)
             boy.dir = 1
@@ -126,9 +126,13 @@ class Boy:
         self.event_que = []
         self.cur_state = WalkingState
         self.cur_state.enter(self, None)
+        self.get_ball_num = 0
+
+    def get(self, ball):
+        self.get_ball_num += 1
 
     def get_bb(self):
-        return self.x - 50, self.y - 50, self.x + 50, self.y + 50
+        return self.x - self.bg.window_left - 25, self.y - self.bg.window_bottom - 40, self.x - self.bg.window_left + 25, self.y - self.bg.window_bottom + 40
 
 
     def set_background(self, bg):
@@ -149,7 +153,12 @@ class Boy:
 
     def draw(self):
         self.cur_state.draw(self)
-        self.font.draw(self.canvas_width//2 - 60, self.canvas_height//2 + 50, '(%5d, %5d)' % (self.x, self.y), (255, 255, 0))
+        self.font.draw(self.x - self.bg.window_left - 60, self.y - self.bg.window_bottom + 60, '(%5d, %5d)' % (self.x, self.y),
+                       (255, 255, 0))
+        self.font.draw(self.x - self.bg.window_left - 60, self.y - self.bg.window_bottom + 80,
+                       'eat : (%5d)' % self.get_ball_num,
+                       (255, 0, 0))
+        draw_rectangle(*self.get_bb())
 
     def handle_event(self, event):
         if (event.type, event.key) in key_event_table:
